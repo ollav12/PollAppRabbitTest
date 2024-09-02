@@ -1,5 +1,7 @@
-package com.example.demo;
+package com.example.Controllers;
 
+import com.example.Managers.DomainManager;
+import com.example.Domains.DomainModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -8,11 +10,11 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/suggest")
-public class SuggestionController {
+public class DomainController {
 
-    private final SuggestionRepository repo;
+    private final DomainManager repo;
 
-    public SuggestionController(@Autowired SuggestionRepository repo) {
+    public DomainController(@Autowired DomainManager repo) {
         this.repo = repo;
     }
 /*
@@ -34,7 +36,7 @@ public class SuggestionController {
 */
 
     @GetMapping("/{location}")
-    public ResponseEntity<Suggestion> suggestBergen(@PathVariable String location) {
+    public ResponseEntity<DomainModel> suggestBergen(@PathVariable String location) {
         if(repo.getMap().containsKey(location)) {
             return ResponseEntity.ok(repo.getMap().get(location));
         }
@@ -42,7 +44,7 @@ public class SuggestionController {
     }
 
     @PostMapping("/{location}")
-    public ResponseEntity<Suggestion> createSuggestion(@PathVariable String location, @RequestBody Suggestion suggestion) {
+    public ResponseEntity<DomainModel> createSuggestion(@PathVariable String location, @RequestBody DomainManager suggestion) {
         repo.getMap().put(location, suggestion);
         return ResponseEntity.created(URI.create("/" + location)).body(suggestion);
     }
