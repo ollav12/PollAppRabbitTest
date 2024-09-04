@@ -1,17 +1,28 @@
-package com.example.Domains;
+package com.example.Models;
 
 import java.time.Instant;
+import java.util.UUID;
 
 public class Poll {
 
+    private Integer id = UUID.randomUUID().hashCode();
     private String question;
     private Instant publishedAt;
     private Instant validUntil;
 
-    public Poll(String question, Instant publishedAt, Instant validUntil) {
+    public Poll(Integer id, String question, Instant publishedAt, Instant validUntil) {
+        this.id = id;
         this.question = question;
         this.publishedAt = publishedAt;
         this.validUntil = validUntil;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getQuestion() {
