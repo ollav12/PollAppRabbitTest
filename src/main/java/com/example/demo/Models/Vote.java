@@ -1,15 +1,15 @@
-package com.example.Models;
+package com.example.demo.Models;
 
 import java.time.Instant;
 import java.util.UUID;
 
 public class Vote {
 
-    private Integer id = UUID.randomUUID().hashCode();
+    private Integer id;
     private Instant publishedAt;
 
-    public Vote(Integer id, Instant publishedAt) {
-        this.id = id;
+    public Vote(Instant publishedAt) {
+        this.id = Math.abs(UUID.randomUUID().hashCode());
         this.publishedAt = publishedAt;
     }
 

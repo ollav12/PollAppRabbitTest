@@ -1,7 +1,7 @@
-package com.example.Controllers;
+package com.example.demo.Controllers;
 
-import com.example.Managers.DomainManager;
-import com.example.Models.User;
+import com.example.demo.Managers.PollManager;
+import com.example.demo.Models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +14,7 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    private DomainManager repo;
+    private PollManager repo;
 
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user) {
@@ -28,15 +28,20 @@ public class UserController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
         return new ResponseEntity<>(repo.getAllUsers(), HttpStatus.OK);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable Integer id, @RequestBody User user) {
+        User updatedUser = repo.updateUser(id, user);
+        return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Integer id) {
         repo.deleteUser(id);
-        return ResponseEntity.noContent().build();
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

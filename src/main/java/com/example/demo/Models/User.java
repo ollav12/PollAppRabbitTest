@@ -1,4 +1,4 @@
-package com.example.Models;
+package com.example.demo.Models;
 
 import java.util.UUID;
 
@@ -18,7 +18,6 @@ public class User {
     public Integer getId() {
         return id;
     }
-
 
     public String getUsername() {
         return username;
