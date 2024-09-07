@@ -1,74 +1,104 @@
 package com.example.demo;
 
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.http.MediaType;
+import org.junit.jupiter.api.Test;
+
+import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class UserControllerTest {
+public class ApplicationTests {
 
     @Autowired
     private MockMvc mockMvc;
 
     @Test
-    public void testCreateUser() throws Exception {
+    public void testFullScenario() throws Exception {
+        // Step 1: Create a new user (User 1)
         mockMvc.perform(post("/users")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"username\":\"user1\", \"email\":\"user1@example.com\"}"))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.username").value("user1"))
-                .andExpect(jsonPath("$.email").value("user1@example.com"));
-    }
+                .andExpect(jsonPath("$.username").value("user1"));
 
-    @Test
-    public void testGetUser() throws Exception {
-        // Create user first
+        // Step 2: List all users (should show the newly created user)
+        mockMvc.perform(get("/users"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].username").value("user1"));
+
+        // Step 3: Create another user (User 2)
         mockMvc.perform(post("/users")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"username\":\"user2\", \"email\":\"user2@example.com\"}"))
-                .andExpect(status().isCreated());
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.username").value("user2"));
 
-        // Get user
-        mockMvc.perform(get("/users/user2"))
+        // Step 4: List all users again (should show both users)
+        mockMvc.perform(get("/users"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.username").value("user2"))
-                .andExpect(jsonPath("$.email").value("user2@example.com"));
-    }
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[0].username").value("user1"))
+                .andExpect(jsonPath("$[1].username").value("user2"));
 
-    @Test
-    public void testUpdateUser() throws Exception {
-        // Create user first
-        mockMvc.perform(post("/users")
+        // Step 5: User 1 creates a new poll
+        mockMvc.perform(post("/polls")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"username\":\"user3\", \"email\":\"user3@example.com\"}"))
-                .andExpect(status().isCreated());
+                        .content("{\"creatorUsername\":\"user1\", \"question\":\"What's your favorite color?\"}"))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.creatorUsername").value("user1"))
+                .andExpect(jsonPath("$.question").value("What's your favorite color?"));
 
-        // Update user
-        mockMvc.perform(put("/users/user3")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"username\":\"user3_updated\", \"email\":\"user3_updated@example.com\"}"))
+        // Step 6: List polls (should show the new poll)
+        mockMvc.perform(get("/polls"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.username").value("user3_updated"))
-                .andExpect(jsonPath("$.email").value("user3_updated@example.com"));
-    }
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].question").value("What's your favorite color?"));
 
-    @Test
-    public void testDeleteUser() throws Exception {
-        // Create user first
-        mockMvc.perform(post("/users")
+        // Step 7: Create a vote option for the poll
+        mockMvc.perform(post("/voteOptions")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"username\":\"user4\", \"email\":\"user4@example.com\"}"))
+                        .content("{\"pollId\":0, \"caption\":\"Blue\", \"presentationOrder\":1}"))
                 .andExpect(status().isCreated());
 
-        // Delete user
-        mockMvc.perform(delete("/users/user4"))
+        // Step 8: User 2 votes on the poll
+        mockMvc.perform(post("/votes")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"username\":\"user2\", \"pollId\":0, \"voteOptionId\":0}"))
+                .andExpect(status().isCreated());
+
+        // Step 9: User 2 changes his vote (create a second option and vote for it)
+        mockMvc.perform(post("/voteOptions")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"pollId\":0, \"caption\":\"Red\", \"presentationOrder\":2}"))
+                .andExpect(status().isCreated());
+
+        mockMvc.perform(put("/votes/0")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"username\":\"user2\", \"pollId\":0, \"voteOptionId\":1}")) // Changing vote to second option
                 .andExpect(status().isOk());
 
-        // Try to get deleted user
-        mockMvc.perform(get("/users/user4"))
-                .andExpect(status().isNotFound());
+        // Step 10: List votes (should show the most recent vote for User 2)
+        mockMvc.perform(get("/votes"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].username").value("user2"))
+                .andExpect(jsonPath("$[0].voteOptionId").value(1));
+
+        // Step 11: Delete the poll
+        mockMvc.perform(delete("/polls/0"))
+                .andExpect(status().isOk());
+
+        // Step 12: List votes (should be empty after poll deletion)
+        mockMvc.perform(get("/votes"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(0)));
     }
 }

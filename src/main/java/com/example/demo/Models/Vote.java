@@ -1,25 +1,35 @@
 package com.example.demo.Models;
 
 import java.time.Instant;
-import java.util.UUID;
 
 public class Vote {
 
-    private Integer id;
+    private Integer voteId;
+    private final String username;
+    private final Integer pollId;
+    private Integer voteOptionId;
     private Instant publishedAt;
 
-    public Vote(Instant publishedAt) {
-        this.id = Math.abs(UUID.randomUUID().hashCode());
+    public Vote(String username, Integer pollId, Integer voteOptionId, Instant publishedAt) {
+        this.username = username;
+        this.pollId = pollId;
+        this.voteOptionId = voteOptionId;
         this.publishedAt = publishedAt;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getVoteId() {
+        return voteId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    public void setVoteId(Integer voteId) { this.voteId = voteId; }
+
+    public String getUsername() { return username; }
+
+    public Integer getPollId() { return pollId; }
+
+    public Integer getVoteOptionId() { return voteOptionId; }
+
+    public Integer setVoteOptionId(Integer voteOptionId) { return this.voteOptionId = voteOptionId; }
 
     public Instant getPublishedAt() {
         return publishedAt;

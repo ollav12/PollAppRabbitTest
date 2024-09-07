@@ -1,5 +1,6 @@
 package com.example.demo.Controllers;
 
+import com.example.demo.Exceptions.VoteOptionNotFoundException;
 import com.example.demo.Managers.PollManager;
 import com.example.demo.Models.VoteOption;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,13 +36,23 @@ public class VoteOptionController {
 
     @PutMapping("/{id}")
     public ResponseEntity<VoteOption> updateVoteOption(@PathVariable Integer id, @RequestBody VoteOption voteOption) {
-        VoteOption updatedVoteOption = repo.updateVoteOption(id, voteOption);
-        return new ResponseEntity<>(updatedVoteOption, HttpStatus.OK);
+        try {
+            VoteOption updatedVoteOption = repo.updateVoteOption(id, voteOption);
+            return new ResponseEntity<>(updatedVoteOption, HttpStatus.OK);
+        } catch (VoteOptionNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<VoteOption> deleteVoteOption(@PathVariable Integer id) {
-        repo.deleteVoteOption(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<Void> deleteVoteOption(@PathVariable Integer id) {
+        try {
+            repo.deleteVoteOption(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (VoteOptionNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }

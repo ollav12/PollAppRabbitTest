@@ -1,7 +1,9 @@
 package com.example.demo.Controllers;
 
+import com.example.demo.Exceptions.PollNotFoundException;
 import com.example.demo.Managers.PollManager;
 import com.example.demo.Models.Poll;
+import com.example.demo.Models.Vote;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,13 +37,21 @@ public class PollController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Poll> updatePoll(@PathVariable Integer id, @RequestBody Poll poll) {
-        Poll updatedPoll = repo.updatePoll(id, poll);
-        return new ResponseEntity<>(updatedPoll, HttpStatus.OK);
+        try {
+            Poll updatedPoll = repo.updatePoll(id, poll);
+            return new ResponseEntity<>(updatedPoll, HttpStatus.OK);
+        } catch (PollNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePoll(@PathVariable Integer id) {
-        repo.deletePoll(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        try {
+            repo.deletePoll(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (PollNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }

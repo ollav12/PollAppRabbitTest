@@ -1,4 +1,7 @@
 package com.example.demo.Exceptions;
 
-public class InvalidUsername {
+public class InvalidUsername extends RuntimeException {
+    public InvalidUsername(String message) {
+        super(message);
+    }
 }

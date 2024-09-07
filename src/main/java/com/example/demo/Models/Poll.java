@@ -1,29 +1,33 @@
 package com.example.demo.Models;
 
 import java.time.Instant;
-import java.util.UUID;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Poll {
 
-    private Integer id;
+    private Integer pollId;
+    private final String creatorUsername;
     private String question;
+    private List<VoteOption> voteOptions;
     private Instant publishedAt;
     private Instant validUntil;
 
-    public Poll(String question, Instant publishedAt, Instant validUntil) {
-        this.id = Math.abs(UUID.randomUUID().hashCode());
+    public Poll(String creatorUsername, String question, Instant publishedAt, Instant validUntil) {
+        this.creatorUsername = creatorUsername;
         this.question = question;
         this.publishedAt = publishedAt;
         this.validUntil = validUntil;
+        this.voteOptions = new ArrayList<>();
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getPollId() {
+        return pollId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    public void setPollId(Integer pollId) { this.pollId = pollId; }
+
+    public String getCreatorUsername() { return creatorUsername; }
 
     public String getQuestion() {
         return question;
@@ -48,4 +52,8 @@ public class Poll {
     public void setValidUntil(Instant validUntil) {
         this.validUntil = validUntil;
     }
+
+    public List<VoteOption> getVoteOptions() { return voteOptions; }
+
+    public void setVoteOptions(List<VoteOption> voteOptions) { this.voteOptions = voteOptions; }
 }

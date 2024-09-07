@@ -1,24 +1,30 @@
 package com.example.demo.Models;
 
-import java.util.UUID;
+import java.util.ArrayList;
+import java.util.List;
 
 public class VoteOption {
 
-    private Integer id;
+    private Integer voteOptionId;
+    private Integer pollId;
     private String caption;
     private Integer presentationOrder;
+    private List<Vote> votes;
 
-    public VoteOption(String caption, Integer presentationOrder) {
-        this.id = Math.abs(UUID.randomUUID().hashCode());
+    public VoteOption(Integer pollId, String caption, Integer presentationOrder) {
+        this.pollId = pollId;
         this.caption = caption;
         this.presentationOrder = presentationOrder;
+        this.votes = new ArrayList<>();
     }
 
-    public Integer getId() {return id;}
+    public Integer getVoteOptionId() { return voteOptionId; }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setVoteOptionId(Integer voteOptionId) {
+        this.voteOptionId = voteOptionId;
     }
+
+    public Integer getPollId() { return pollId; }
 
     public String getCaption() {
         return caption;
@@ -35,4 +41,6 @@ public class VoteOption {
     public void setPresentationOrder(Integer presentationOrder) {
         this.presentationOrder = presentationOrder;
     }
+
+    public List<Vote> getVotes() { return votes; }
 }

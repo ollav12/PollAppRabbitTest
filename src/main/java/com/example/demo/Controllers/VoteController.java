@@ -1,5 +1,9 @@
 package com.example.demo.Controllers;
 
+import com.example.demo.Exceptions.PollNotFoundException;
+import com.example.demo.Exceptions.UserNotFoundException;
+import com.example.demo.Exceptions.VoteNotFoundException;
+import com.example.demo.Exceptions.VoteOptionNotFoundException;
 import com.example.demo.Managers.PollManager;
 import com.example.demo.Models.Vote;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/votes")
@@ -17,9 +23,13 @@ public class VoteController {
     private PollManager repo;
 
     @PostMapping
-    public ResponseEntity<Vote> createVote(@RequestBody Vote vote) {
-        Vote createdVote = repo.createVote(vote);
-        return new ResponseEntity<>(createdVote, HttpStatus.CREATED);
+    public ResponseEntity<Vote> voteOnOption(@RequestBody Vote vote) {
+        try {
+            Vote newVote = repo.voteOnOption(vote.getUsername(), vote.getPollId(), vote.getVoteOptionId(), vote.getPublishedAt());
+            return new ResponseEntity<>(newVote, HttpStatus.CREATED);
+        } catch (UserNotFoundException | PollNotFoundException | VoteOptionNotFoundException | IllegalStateException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/{id}")
@@ -35,8 +45,12 @@ public class VoteController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Vote> updateVote(@PathVariable Integer id, @RequestBody Vote vote) {
-        Vote updatedVote = repo.updateVote(id, vote);
-        return new ResponseEntity<>(updatedVote, HttpStatus.OK);
+        try {
+            Vote updatedVote = repo.updateVote(id, vote);
+            return new ResponseEntity<>(updatedVote, HttpStatus.OK);
+        } catch (VoteNotFoundException | VoteOptionNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @DeleteMapping("/{id}")

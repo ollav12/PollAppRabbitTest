@@ -1,55 +1,73 @@
 package com.example.demo.Managers;
 
+import com.example.demo.Exceptions.*;
 import com.example.demo.Models.Poll;
 import com.example.demo.Models.User;
 import com.example.demo.Models.Vote;
 import com.example.demo.Models.VoteOption;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.Instant;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 public class PollManager {
 
-    // Lagring i minnet ved bruk av HashMaps
-    private Map<Integer, User> users = new HashMap<>();
+    private Map<String, User> users = new HashMap<>();
     private Map<Integer, Poll> polls = new HashMap<>();
     private Map<Integer, Vote> votes = new HashMap<>();
     private Map<Integer, VoteOption> voteOptions = new HashMap<>();
 
-    // User management
+    private Integer nextPollId = 0;
+    private Integer nextVoteId = 0;
+    private Integer nextVoteOptionId = 0;
+
+    // User CRUDs
     public User createUser(User user) {
-        users.put(user.getId(), user);
+        if (users.containsKey(user.getUsername())) {
+            throw new UserNotFoundException("Username '" + user.getUsername() + "' is already taken.");
+        }
+        users.put(user.getUsername(), user);
         return user;
     }
 
-    public User getUser(Integer id) {
-        return users.get(id);
+    public User getUser(String username) {
+        return users.get(username);
     }
 
     public List<User> getAllUsers() {
         return new ArrayList<>(users.values());
     }
 
-    public User updateUser(Integer id, User updatedUser) {
-        User existingUser = users.get(id);
-        if (existingUser != null) {
-            existingUser.setUsername(updatedUser.getUsername());
-            existingUser.setEmail(updatedUser.getEmail());
+    public User updateUser(String username, User updatedUser) {
+        User existingUser = users.get(username);
+        if (existingUser == null) {
+            throw new UserNotFoundException("User not found.");
         }
+
+        users.remove(username);
+
+        existingUser.setUsername(updatedUser.getUsername());
+        existingUser.setEmail(updatedUser.getEmail());
+
+        users.put(existingUser.getUsername(), existingUser);
+
         return existingUser;
     }
 
-    public void deleteUser(Integer id) {
-        users.remove(id);
+    public void deleteUser(String username) {
+        users.remove(username);
     }
+
 
     // Poll CRUDs
     public Poll createPoll(Poll poll) {
-        polls.put(poll.getId(), poll);
+        if(!users.containsKey(poll.getCreatorUsername())) {
+            throw new InvalidUsername("Username '" + poll.getCreatorUsername() + "' does not exists.");
+        }
+        poll.setPollId(nextPollId++);
+        polls.put(poll.getPollId(), poll);
         return poll;
     }
 
@@ -62,17 +80,69 @@ public class PollManager {
     }
 
     public Poll updatePoll(Integer id, Poll updatedPoll) {
-        return polls.put(id, updatedPoll);
+        Poll existingPoll = polls.get(id);
+        if (existingPoll == null) {
+            throw new PollNotFoundException("Poll not found.");
+        }
+
+        existingPoll.setQuestion(updatedPoll.getQuestion());
+        existingPoll.setValidUntil(updatedPoll.getValidUntil());
+
+        polls.put(id, existingPoll);
+        return existingPoll;
     }
 
     public void deletePoll(Integer id) {
+        if (!polls.containsKey(id)) {
+            throw new PollNotFoundException("Poll not found.");
+        }
+
         polls.remove(id);
+
+        List<Integer> voteOptionIds = voteOptions.values().stream()
+                .filter(voteOption -> voteOption.getPollId().equals(id))
+                .map(VoteOption::getVoteOptionId)
+                .collect(Collectors.toList());
+
+        for (Integer voteOptionId : voteOptionIds) {
+            voteOptions.remove(voteOptionId);
+
+            votes.entrySet().removeIf(entry -> entry.getValue().getVoteOptionId().equals(voteOptionId));
+        }
     }
 
+
     // Vote CRUDs
-    public Vote createVote(Vote vote) {
-        votes.put(vote.getId(), vote);
-        return vote;
+    public Vote voteOnOption(String username, Integer pollId, Integer voteOptionId, Instant publishedAt) {
+        User user = users.get(username);
+        if (user == null) {
+            throw new UserNotFoundException("User not found.");
+        }
+
+        Poll poll = polls.get(pollId);
+        if (poll == null) {
+            throw new PollNotFoundException("Poll not found.");
+        }
+
+        VoteOption voteOption = voteOptions.get(voteOptionId);
+        if (voteOption == null || !poll.getVoteOptions().contains(voteOption)) {
+            throw new VoteOptionNotFoundException("Vote option not found for this poll.");
+        }
+
+        for (Vote vote : voteOption.getVotes()) {
+            if (vote.getUsername().equals(user.getUsername())) {
+                throw new IllegalStateException("User has already voted on this option.");
+            }
+        }
+
+        Vote newVote = new Vote(username, pollId, voteOptionId, publishedAt);
+        newVote.setVoteId(nextVoteId++);
+
+        voteOption.getVotes().add(newVote);
+
+        votes.put(newVote.getVoteId(), newVote);
+
+        return newVote;
     }
 
     public Vote getVote(Integer id) {
@@ -84,26 +154,107 @@ public class PollManager {
     }
 
     public Vote updateVote(Integer id, Vote updatedVote) {
-        return votes.put(id, updatedVote);
+        Vote existingVote = votes.get(id);
+        if (existingVote == null) {
+            throw new VoteNotFoundException("Vote not found.");
+        }
+
+        if (!existingVote.getVoteOptionId().equals(updatedVote.getVoteOptionId()) &&
+                existingVote.getPollId().equals(updatedVote.getPollId())) {
+
+            removeVoteFromOption(existingVote);
+
+            VoteOption newOption = voteOptions.get(updatedVote.getVoteOptionId());
+            if (newOption == null) {
+                throw new VoteOptionNotFoundException("Vote option not found.");
+            }
+            existingVote.setVoteOptionId(updatedVote.getVoteOptionId());
+            existingVote.setPublishedAt(updatedVote.getPublishedAt());
+            newOption.getVotes().add(existingVote);
+        } else {
+            existingVote.setPublishedAt(updatedVote.getPublishedAt());
+        }
+
+        votes.put(id, existingVote);
+        return existingVote;
     }
 
     public void deleteVote(Integer id) {
-        votes.remove(id);
+        Vote existingVote = votes.get(id);
+        if (existingVote != null) {
+            removeVoteFromOption(existingVote);
+            votes.remove(id);
+        }
     }
+
+    public void removeVoteFromOption(Vote existingVote) {
+        VoteOption currentOption = voteOptions.get(existingVote.getVoteOptionId());
+        if (currentOption != null) {
+            currentOption.getVotes().removeIf(vote -> vote.getVoteId().equals(existingVote.getVoteId()));
+        }
+    }
+
 
     // VoteOption CRUDs
     public VoteOption createVoteOption(VoteOption voteOption) {
-        voteOptions.put(voteOption.getId(), voteOption);
+        Poll poll = polls.get(voteOption.getPollId());
+        if (poll == null) {
+            throw new PollNotFoundException("Poll not found with ID: " + voteOption.getPollId());
+        }
+
+        voteOption.setVoteOptionId(nextVoteOptionId++);
+        voteOptions.put(voteOption.getVoteOptionId(), voteOption);
+
+        List<VoteOption> pollVoteOptions = poll.getVoteOptions();
+
+        if (pollVoteOptions == null) {
+            pollVoteOptions = new ArrayList<>();
+        }
+
+        int insertIndex = 0;
+        for (int i = 0; i < pollVoteOptions.size(); i++) {
+            if (pollVoteOptions.get(i).getPresentationOrder() > voteOption.getPresentationOrder()) {
+                insertIndex = i;
+                break;
+            }
+        }
+
+        pollVoteOptions.add(insertIndex, voteOption);
+        poll.setVoteOptions(pollVoteOptions);
+
         return voteOption;
     }
+
     public VoteOption getVoteOption(Integer id) { return voteOptions.get(id); }
 
     public List<VoteOption> getAllVoteOptions() {
         return new ArrayList<>(voteOptions.values());
     }
 
-    public VoteOption updateVoteOption(Integer id, VoteOption updatedVoteOption) { return voteOptions.put(id, updatedVoteOption); }
+    public VoteOption updateVoteOption(Integer voteOptionId, VoteOption updatedVoteOption) {
+        VoteOption existingVoteOption = voteOptions.get(voteOptionId);
+        if (existingVoteOption == null) {
+            throw new VoteOptionNotFoundException("Vote option not found.");
+        }
 
-    public void deleteVoteOption(Integer id) { voteOptions.remove(id); }
+        existingVoteOption.setCaption(updatedVoteOption.getCaption());
+        existingVoteOption.setPresentationOrder(updatedVoteOption.getPresentationOrder());
 
+        voteOptions.put(voteOptionId, existingVoteOption);
+        return existingVoteOption;
+    }
+
+    public void deleteVoteOption(Integer voteOptionId) {
+        VoteOption voteOption = voteOptions.remove(voteOptionId);
+        if (voteOption == null) {
+            throw new VoteOptionNotFoundException("Vote option not found.");
+        }
+
+        votes.entrySet().removeIf(entry -> entry.getValue().getVoteOptionId().equals(voteOptionId));
+
+        Poll parentPoll = polls.get(voteOption.getPollId());
+        if (parentPoll != null) {
+            parentPoll.getVoteOptions().removeIf(vo -> vo.getVoteOptionId().equals(voteOptionId));
+        }
+    }
 }

@@ -1,5 +1,6 @@
 package com.example.demo.Controllers;
 
+import com.example.demo.Exceptions.UserNotFoundException;
 import com.example.demo.Managers.PollManager;
 import com.example.demo.Models.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +23,12 @@ public class UserController {
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<User> getUser(@PathVariable Integer id) {
-        User user = repo.getUser(id);
+    @GetMapping("/{username}")
+    public ResponseEntity<User> getUser(@PathVariable String username) {
+        User user = repo.getUser(username);
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
@@ -33,15 +37,19 @@ public class UserController {
         return new ResponseEntity<>(repo.getAllUsers(), HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Integer id, @RequestBody User user) {
-        User updatedUser = repo.updateUser(id, user);
-        return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+    @PutMapping("/{username}")
+    public ResponseEntity<User> updateUser(@PathVariable String username, @RequestBody User user) {
+        try {
+            User updatedUser = repo.updateUser(username, user);
+            return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+        } catch (UserNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Integer id) {
-        repo.deleteUser(id);
+    @DeleteMapping("/{username}")
+    public ResponseEntity<Void> deleteUser(@PathVariable String username) {
+        repo.deleteUser(username);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
