@@ -63,16 +63,32 @@ public class PollManager {
 
     // Poll CRUDs
     public Poll createPoll(Poll poll) {
-        if(!users.containsKey(poll.getCreatorUsername())) {
-            throw new InvalidUsername("Username '" + poll.getCreatorUsername() + "' does not exists.");
+        if (!users.containsKey(poll.getCreatorUsername())) {
+            throw new InvalidUsername("Username '" + poll.getCreatorUsername() + "' does not exist.");
         }
+
+
         poll.setPollId(nextPollId++);
         polls.put(poll.getPollId(), poll);
+
+
+        if (poll.getVoteOptions() != null && !poll.getVoteOptions().isEmpty()) {
+            List<VoteOption> optionsCopy = new ArrayList<>(poll.getVoteOptions());
+            for (VoteOption option : optionsCopy) {
+                option.setPollId(poll.getPollId());
+                createVoteOption(option);
+            }
+        }
+
         return poll;
     }
 
     public Poll getPoll(Integer id) {
-        return polls.get(id);
+        Poll poll = polls.get(id);
+        if (poll == null) {
+            throw new PollNotFoundException("Poll not found.");
+        }
+        return poll;
     }
 
     public List<Poll> getAllPolls() {
@@ -129,9 +145,9 @@ public class PollManager {
             throw new VoteOptionNotFoundException("Vote option not found for this poll.");
         }
 
-        for (Vote vote : voteOption.getVotes()) {
-            if (vote.getUsername().equals(user.getUsername())) {
-                throw new IllegalStateException("User has already voted on this option.");
+        for (Vote existingVote : votes.values()) {
+            if (existingVote.getPollId().equals(pollId) && existingVote.getUsername().equals(user.getUsername())) {
+                throw new IllegalStateException("User has already voted on this poll.");
             }
         }
 
@@ -139,7 +155,6 @@ public class PollManager {
         newVote.setVoteId(nextVoteId++);
 
         voteOption.getVotes().add(newVote);
-
         votes.put(newVote.getVoteId(), newVote);
 
         return newVote;
@@ -204,23 +219,6 @@ public class PollManager {
 
         voteOption.setVoteOptionId(nextVoteOptionId++);
         voteOptions.put(voteOption.getVoteOptionId(), voteOption);
-
-        List<VoteOption> pollVoteOptions = poll.getVoteOptions();
-
-        if (pollVoteOptions == null) {
-            pollVoteOptions = new ArrayList<>();
-        }
-
-        int insertIndex = 0;
-        for (int i = 0; i < pollVoteOptions.size(); i++) {
-            if (pollVoteOptions.get(i).getPresentationOrder() > voteOption.getPresentationOrder()) {
-                insertIndex = i;
-                break;
-            }
-        }
-
-        pollVoteOptions.add(insertIndex, voteOption);
-        poll.setVoteOptions(pollVoteOptions);
 
         return voteOption;
     }

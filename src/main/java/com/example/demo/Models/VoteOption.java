@@ -26,6 +26,8 @@ public class VoteOption {
 
     public Integer getPollId() { return pollId; }
 
+    public void setPollId(Integer pollId) { this.pollId = pollId; }
+
     public String getCaption() {
         return caption;
     }

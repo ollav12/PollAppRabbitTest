@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/polls")
 public class PollController {
 
@@ -27,6 +28,9 @@ public class PollController {
     @GetMapping("/{id}")
     public ResponseEntity<Poll> getPoll(@PathVariable Integer id) {
         Poll poll = repo.getPoll(id);
+        if (poll == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
         return new ResponseEntity<>(poll, HttpStatus.OK);
     }
 
