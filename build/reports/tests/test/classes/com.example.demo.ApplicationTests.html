@@ -29,7 +29,7 @@
 </td>
 <td>
 <div class="infoBox" id="failures">
-<div class="counter">0</div>
+<div class="counter">1</div>
 <p>failures</p>
 </div>
 </td>
@@ -50,8 +50,8 @@
 </div>
 </td>
 <td>
-<div class="infoBox success" id="successRate">
-<div class="percent">100%</div>
+<div class="infoBox failures" id="successRate">
+<div class="percent">0%</div>
 <p>successful</p>
 </div>
 </td>
@@ -61,16 +61,38 @@
 <div id="tabs">
 <ul class="tabLinks">
 <li>
-<a href="#tab0">Tests</a>
+<a href="#tab0">Failed tests</a>
 </li>
 <li>
-<a href="#tab1">Standard output</a>
+<a href="#tab1">Tests</a>
 </li>
 <li>
-<a href="#tab2">Standard error</a>
+<a href="#tab2">Standard output</a>
+</li>
+<li>
+<a href="#tab3">Standard error</a>
 </li>
 </ul>
 <div id="tab0" class="tab">
+<h2>Failed tests</h2>
+<div class="test">
+<a name="testFullScenario()"></a>
+<h3 class="failures">testFullScenario()</h3>
+<span class="code">
+<pre>java.lang.AssertionError: Status expected:&lt;201&gt; but was:&lt;400&gt;
+	at org.springframework.test.util.AssertionErrors.fail(AssertionErrors.java:59)
+	at org.springframework.test.util.AssertionErrors.assertEquals(AssertionErrors.java:122)
+	at org.springframework.test.web.servlet.result.StatusResultMatchers.lambda$matcher$9(StatusResultMatchers.java:637)
+	at org.springframework.test.web.servlet.MockMvc$1.andExpect(MockMvc.java:214)
+	at com.example.demo.ApplicationTests.testFullScenario(ApplicationTests.java:75)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+</pre>
+</span>
+</div>
+</div>
+<div id="tab1" class="tab">
 <h2>Tests</h2>
 <table>
 <thead>
@@ -81,17 +103,17 @@
 </tr>
 </thead>
 <tr>
-<td class="success">testFullScenario()</td>
-<td class="success">0.566s</td>
-<td class="success">passed</td>
+<td class="failures">testFullScenario()</td>
+<td class="failures">0.566s</td>
+<td class="failures">failed</td>
 </tr>
 </table>
 </div>
-<div id="tab1" class="tab">
+<div id="tab2" class="tab">
 <h2>Standard output</h2>
 <span class="code">
-<pre>18:36:17.023 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.example.demo.ApplicationTests]: ApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-18:36:17.074 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.example.demo.DemoApplication for test class com.example.demo.ApplicationTests
+<pre>13:14:35.947 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.example.demo.ApplicationTests]: ApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+13:14:36.001 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.example.demo.DemoApplication for test class com.example.demo.ApplicationTests
 
   .   ____          _            __ _ _
  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
@@ -102,16 +124,313 @@
 
  :: Spring Boot ::                (v3.3.3)
 
-2024-09-07T18:36:17.256+02:00  INFO 55475 --- [demo] [    Test worker] com.example.demo.ApplicationTests        : Starting ApplicationTests using Java 21.0.4 with PID 55475 (started by haaler in /Users/haaler/Downloads/UiB Master 1st Semester/DAT250/Projects/DAT250Test)
-2024-09-07T18:36:17.257+02:00  INFO 55475 --- [demo] [    Test worker] com.example.demo.ApplicationTests        : No active profile set, falling back to 1 default profile: &quot;default&quot;
-2024-09-07T18:36:17.758+02:00  INFO 55475 --- [demo] [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
-2024-09-07T18:36:17.758+02:00  INFO 55475 --- [demo] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
-2024-09-07T18:36:17.759+02:00  INFO 55475 --- [demo] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
-2024-09-07T18:36:17.773+02:00  INFO 55475 --- [demo] [    Test worker] com.example.demo.ApplicationTests        : Started ApplicationTests in 0.631 seconds (process running for 1.19)
+2024-09-11T13:14:36.164+02:00  INFO 78867 --- [demo] [    Test worker] com.example.demo.ApplicationTests        : Starting ApplicationTests using Java 21.0.4 with PID 78867 (started by haaler in /Users/haaler/Downloads/UiB Master 1st Semester/DAT250/Projects/PollApp)
+2024-09-11T13:14:36.165+02:00  INFO 78867 --- [demo] [    Test worker] com.example.demo.ApplicationTests        : No active profile set, falling back to 1 default profile: &quot;default&quot;
+2024-09-11T13:14:36.549+02:00  INFO 78867 --- [demo] [    Test worker] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [static/index.html]
+2024-09-11T13:14:36.655+02:00  INFO 78867 --- [demo] [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2024-09-11T13:14:36.656+02:00  INFO 78867 --- [demo] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2024-09-11T13:14:36.656+02:00  INFO 78867 --- [demo] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+2024-09-11T13:14:36.670+02:00  INFO 78867 --- [demo] [    Test worker] com.example.demo.ApplicationTests        : Started ApplicationTests in 0.608 seconds (process running for 1.148)
+
+MockHttpServletRequest:
+      HTTP Method = POST
+      Request URI = /users
+       Parameters = {}
+          Headers = [Content-Type:&quot;application/json;charset=UTF-8&quot;, Content-Length:&quot;49&quot;]
+             Body = {&quot;username&quot;:&quot;user1&quot;, &quot;email&quot;:&quot;user1@example.com&quot;}
+    Session Attrs = {}
+
+Handler:
+             Type = com.example.demo.Controllers.UserController
+           Method = com.example.demo.Controllers.UserController#createUser(User)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = null
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 201
+    Error message = null
+          Headers = [Vary:&quot;Origin&quot;, &quot;Access-Control-Request-Method&quot;, &quot;Access-Control-Request-Headers&quot;, Content-Type:&quot;application/json&quot;]
+     Content type = application/json
+             Body = {&quot;username&quot;:&quot;user1&quot;,&quot;email&quot;:&quot;user1@example.com&quot;}
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+
+MockHttpServletRequest:
+      HTTP Method = GET
+      Request URI = /users
+       Parameters = {}
+          Headers = []
+             Body = null
+    Session Attrs = {}
+
+Handler:
+             Type = com.example.demo.Controllers.UserController
+           Method = com.example.demo.Controllers.UserController#getAllUsers()
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = null
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 200
+    Error message = null
+          Headers = [Vary:&quot;Origin&quot;, &quot;Access-Control-Request-Method&quot;, &quot;Access-Control-Request-Headers&quot;, Content-Type:&quot;application/json&quot;]
+     Content type = application/json
+             Body = [{&quot;username&quot;:&quot;user1&quot;,&quot;email&quot;:&quot;user1@example.com&quot;}]
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+
+MockHttpServletRequest:
+      HTTP Method = POST
+      Request URI = /users
+       Parameters = {}
+          Headers = [Content-Type:&quot;application/json;charset=UTF-8&quot;, Content-Length:&quot;49&quot;]
+             Body = {&quot;username&quot;:&quot;user2&quot;, &quot;email&quot;:&quot;user2@example.com&quot;}
+    Session Attrs = {}
+
+Handler:
+             Type = com.example.demo.Controllers.UserController
+           Method = com.example.demo.Controllers.UserController#createUser(User)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = null
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 201
+    Error message = null
+          Headers = [Vary:&quot;Origin&quot;, &quot;Access-Control-Request-Method&quot;, &quot;Access-Control-Request-Headers&quot;, Content-Type:&quot;application/json&quot;]
+     Content type = application/json
+             Body = {&quot;username&quot;:&quot;user2&quot;,&quot;email&quot;:&quot;user2@example.com&quot;}
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+
+MockHttpServletRequest:
+      HTTP Method = GET
+      Request URI = /users
+       Parameters = {}
+          Headers = []
+             Body = null
+    Session Attrs = {}
+
+Handler:
+             Type = com.example.demo.Controllers.UserController
+           Method = com.example.demo.Controllers.UserController#getAllUsers()
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = null
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 200
+    Error message = null
+          Headers = [Vary:&quot;Origin&quot;, &quot;Access-Control-Request-Method&quot;, &quot;Access-Control-Request-Headers&quot;, Content-Type:&quot;application/json&quot;]
+     Content type = application/json
+             Body = [{&quot;username&quot;:&quot;user1&quot;,&quot;email&quot;:&quot;user1@example.com&quot;},{&quot;username&quot;:&quot;user2&quot;,&quot;email&quot;:&quot;user2@example.com&quot;}]
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+
+MockHttpServletRequest:
+      HTTP Method = POST
+      Request URI = /polls
+       Parameters = {}
+          Headers = [Content-Type:&quot;application/json;charset=UTF-8&quot;, Content-Length:&quot;69&quot;]
+             Body = {&quot;creatorUsername&quot;:&quot;user1&quot;, &quot;question&quot;:&quot;What's your favorite color?&quot;}
+    Session Attrs = {}
+
+Handler:
+             Type = com.example.demo.Controllers.PollController
+           Method = com.example.demo.Controllers.PollController#createPoll(Poll)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = null
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 201
+    Error message = null
+          Headers = [Vary:&quot;Origin&quot;, &quot;Access-Control-Request-Method&quot;, &quot;Access-Control-Request-Headers&quot;, Content-Type:&quot;application/json&quot;]
+     Content type = application/json
+             Body = {&quot;pollId&quot;:0,&quot;creatorUsername&quot;:&quot;user1&quot;,&quot;question&quot;:&quot;What's your favorite color?&quot;,&quot;voteOptions&quot;:[],&quot;publishedAt&quot;:null,&quot;validUntil&quot;:null}
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+
+MockHttpServletRequest:
+      HTTP Method = GET
+      Request URI = /polls
+       Parameters = {}
+          Headers = []
+             Body = null
+    Session Attrs = {}
+
+Handler:
+             Type = com.example.demo.Controllers.PollController
+           Method = com.example.demo.Controllers.PollController#getAllPolls()
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = null
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 200
+    Error message = null
+          Headers = [Vary:&quot;Origin&quot;, &quot;Access-Control-Request-Method&quot;, &quot;Access-Control-Request-Headers&quot;, Content-Type:&quot;application/json&quot;]
+     Content type = application/json
+             Body = [{&quot;pollId&quot;:0,&quot;creatorUsername&quot;:&quot;user1&quot;,&quot;question&quot;:&quot;What's your favorite color?&quot;,&quot;voteOptions&quot;:[],&quot;publishedAt&quot;:null,&quot;validUntil&quot;:null}]
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+
+MockHttpServletRequest:
+      HTTP Method = POST
+      Request URI = /voteOptions
+       Parameters = {}
+          Headers = [Content-Type:&quot;application/json;charset=UTF-8&quot;, Content-Length:&quot;53&quot;]
+             Body = {&quot;pollId&quot;:0, &quot;caption&quot;:&quot;Blue&quot;, &quot;presentationOrder&quot;:1}
+    Session Attrs = {}
+
+Handler:
+             Type = com.example.demo.Controllers.VoteOptionController
+           Method = com.example.demo.Controllers.VoteOptionController#createVoteOption(VoteOption)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = null
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 201
+    Error message = null
+          Headers = [Vary:&quot;Origin&quot;, &quot;Access-Control-Request-Method&quot;, &quot;Access-Control-Request-Headers&quot;, Content-Type:&quot;application/json&quot;]
+     Content type = application/json
+             Body = {&quot;voteOptionId&quot;:0,&quot;pollId&quot;:0,&quot;caption&quot;:&quot;Blue&quot;,&quot;presentationOrder&quot;:1,&quot;votes&quot;:[]}
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+
+MockHttpServletRequest:
+      HTTP Method = POST
+      Request URI = /votes
+       Parameters = {}
+          Headers = [Content-Type:&quot;application/json;charset=UTF-8&quot;, Content-Length:&quot;50&quot;]
+             Body = {&quot;username&quot;:&quot;user2&quot;, &quot;pollId&quot;:0, &quot;voteOptionId&quot;:0}
+    Session Attrs = {}
+
+Handler:
+             Type = com.example.demo.Controllers.VoteController
+           Method = com.example.demo.Controllers.VoteController#voteOnOption(Vote)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = null
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 400
+    Error message = null
+          Headers = [Vary:&quot;Origin&quot;, &quot;Access-Control-Request-Method&quot;, &quot;Access-Control-Request-Headers&quot;]
+     Content type = null
+             Body = 
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
 </pre>
 </span>
 </div>
-<div id="tab2" class="tab">
+<div id="tab3" class="tab">
 <h2>Standard error</h2>
 <span class="code">
 <pre>WARNING: A Java agent has been loaded dynamically (/Users/haaler/.gradle/caches/modules-2/files-2.1/net.bytebuddy/byte-buddy-agent/1.14.19/154da3a65b4f4a909d3e5bdec55d1b2b4cbb6ce1/byte-buddy-agent-1.14.19.jar)
@@ -129,7 +448,7 @@ WARNING: Dynamic loading of agents will be disallowed by default in a future rel
 <input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
 </label>
 </div>Generated by 
-<a href="http://www.gradle.org">Gradle 8.8</a> at 7. sep. 2024, 18:36:18</p>
+<a href="http://www.gradle.org">Gradle 8.8</a> at 11. sep. 2024, 13:14:37</p>
 </div>
 </div>
 </body>

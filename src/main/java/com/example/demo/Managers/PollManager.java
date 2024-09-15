@@ -67,10 +67,8 @@ public class PollManager {
             throw new InvalidUsername("Username '" + poll.getCreatorUsername() + "' does not exist.");
         }
 
-
         poll.setPollId(nextPollId++);
         polls.put(poll.getPollId(), poll);
-
 
         if (poll.getVoteOptions() != null && !poll.getVoteOptions().isEmpty()) {
             List<VoteOption> optionsCopy = new ArrayList<>(poll.getVoteOptions());
