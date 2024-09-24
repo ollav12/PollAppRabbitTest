@@ -6,20 +6,13 @@
 <p>One thing I found sort of confusing was how you wanted us to download MongoDB. I first used the Homebrew to install it (command-line extension), however this does not give me a simple .tgz fil to test the sha256 sum on. I ended up downloading it using curl and used that to check the sha256 sum. The sum matched which is shown below:</p>
 
 <h3>Screenshots:</h3>
-<p>SHA256 Checksum OK<br><img width="628" alt="SHA256-OK" src="https://github.com/user-attachments/assets/0fe93366-c406-446c-b173-7432ea20be86"></p>
-<a>1. InsertCRUDs:<img src="<img width="1141" alt="InsertSS" src="https://github.com/user-attachments/assets/c390a5aa-3d0e-4fa0-9d74-e3a0c52f68e8">
-"></a>
-<a>2. QueryCRUDs:<img src="<img width="1096" alt="QuerySS" src="https://github.com/user-attachments/assets/65e6dcb4-7bd1-43b2-85f2-d649448185c6">
-"></a>
-<a>3. UpdateCRUDs:<img src="<img width="1313" alt="UpdateSS" src="https://github.com/user-attachments/assets/a0d8cdd9-9411-4e76-9ae9-fb8fc78a9c19">
-"></a>
-<a>4. DeleteCRUDs:<img src="<img width="1106" alt="DeleteSS" src="https://github.com/user-attachments/assets/6befa235-b22c-4f9f-b202-bb78bf3aef06">
-"></a>
-<a>5. BulkWriteCRUDs:<img src="<img width="1106" alt="Bulk-Write-SS" src="https://github.com/user-attachments/assets/f82bf843-7335-4ef0-8165-1cf9a0e65c39">
-"></a>
-<a>6. MapReduceCRUDs:<img src="<img width="584" alt="mapReduceSS" src="https://github.com/user-attachments/assets/fd9c1152-4092-4d62-9a62-8bf3605e7f4b">
-"></a>
-<a>7. CustomMapReduceCRUDs:<img src="<img width="584" alt="customMapReduceSS" src="https://github.com/user-attachments/assets/3b0b2835-55a8-41c5-8299-6fd9f3d166c8">
-"></a>
+<p>SHA256 Checksum OK:<br><img width="628" alt="SHA256-OK" src="https://github.com/user-attachments/assets/0fe93366-c406-446c-b173-7432ea20be86"></p>
+<p>InsertCRUDs:<br><img src="<img width="1141" alt="InsertSS" src="https://github.com/user-attachments/assets/c390a5aa-3d0e-4fa0-9d74-e3a0c52f68e8"></p>
+<p>QueryCRUDs:<br><img src="<img width="1096" alt="QuerySS" src="https://github.com/user-attachments/assets/65e6dcb4-7bd1-43b2-85f2-d649448185c6"></p>
+<p>UpdateCRUDs:<br><img src="<img width="1313" alt="UpdateSS" src="https://github.com/user-attachments/assets/a0d8cdd9-9411-4e76-9ae9-fb8fc78a9c19"></p>
+<p>DeleteCRUDs:<br><img src="<img width="1106" alt="DeleteSS" src="https://github.com/user-attachments/assets/6befa235-b22c-4f9f-b202-bb78bf3aef06"></p>
+<p>BulkWriteCRUDs:<br><img src="<img width="1106" alt="Bulk-Write-SS" src="https://github.com/user-attachments/assets/f82bf843-7335-4ef0-8165-1cf9a0e65c39"></p>
+<p>MapReduceCRUDs:<br><img src="<img width="584" alt="mapReduceSS" src="https://github.com/user-attachments/assets/fd9c1152-4092-4d62-9a62-8bf3605e7f4b"></p>
+<p>CustomMapReduceCRUDs:<br><img src="<img width="584" alt="customMapReduceSS" src="https://github.com/user-attachments/assets/3b0b2835-55a8-41c5-8299-6fd9f3d166c8"></p>
 
 <p>The custom Map-reduce method I made creates a list of everyone who has made an order on a given day. It could serve useful if you are a store order and need an overview over previous customers, or if someone has placed an order for a specific day. The collection it outputs is a mapping of dates to customers.</p>
