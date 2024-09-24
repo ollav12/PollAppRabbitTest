@@ -1,10 +1,7 @@
 package com.example.demo.Managers;
 
 import com.example.demo.Exceptions.*;
-import com.example.demo.Models.Poll;
-import com.example.demo.Models.User;
-import com.example.demo.Models.Vote;
-import com.example.demo.Models.VoteOption;
+import com.example.demo.Models.*;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;

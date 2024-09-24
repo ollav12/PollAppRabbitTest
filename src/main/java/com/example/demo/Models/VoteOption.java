@@ -46,3 +46,4 @@ public class VoteOption {
 
     public List<Vote> getVotes() { return votes; }
 }
+
