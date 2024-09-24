@@ -6,7 +6,7 @@
 <p>One thing I found sort of confusing was how you wanted us to download MongoDB. I first used the Homebrew to install it (command-line extension), however this does not give me a simple .tgz fil to test the sha256 sum on. I ended up downloading it using curl and used that to check the sha256 sum. The sum matched which is shown below:</p>
 
 <h3>Screenshots:</h3>
-<img width="628" alt="SHA256-OK" src="https://github.com/user-attachments/assets/0fe93366-c406-446c-b173-7432ea20be86">
+<p>SHA256 Checksum OK<img width="628" alt="SHA256-OK" src="https://github.com/user-attachments/assets/0fe93366-c406-446c-b173-7432ea20be86"></p>
 <a>1. InsertCRUDs:<img src="<img width="1141" alt="InsertSS" src="https://github.com/user-attachments/assets/c390a5aa-3d0e-4fa0-9d74-e3a0c52f68e8">
 "></a>
 <a>2. QueryCRUDs:<img src="<img width="1096" alt="QuerySS" src="https://github.com/user-attachments/assets/65e6dcb4-7bd1-43b2-85f2-d649448185c6">
