@@ -8,17 +8,11 @@
 <h3>Screenshots:</h3>
 <p>SHA256 Checksum OK:<br><img width="628" alt="SHA256-OK" src="https://github.com/user-attachments/assets/0fe93366-c406-446c-b173-7432ea20be86"></p>
 <p>InsertCRUDs:<br><img width="1141" alt="InsertSS" src="https://github.com/user-attachments/assets/109a5837-4ee4-4d80-8565-a5ce601546a7"></p>
-<p>QueryCRUDs:<br><img width="1096" alt="QuerySS" src="https://github.com/user-attachments/assets/5ea8b7d4-d667-494a-8361-c2ead378d52d">
-</p>
-<p>UpdateCRUDs:<br><img width="1313" alt="UpdateSS" src="https://github.com/user-attachments/assets/efa09781-a4e7-4281-93f6-6201bd3b6eae">
-</p>
-<p>DeleteCRUDs:<br><img width="1106" alt="DeleteSS" src="https://github.com/user-attachments/assets/8eb2fa62-299d-4f96-b065-0c474e89714e">
-</p>
-<p>BulkWriteCRUDs:<br><<img width="1106" alt="Bulk-Write-SS" src="https://github.com/user-attachments/assets/d23a29a2-054e-4fdd-a797-9b18725f4720">
-/p>
-<p>MapReduceCRUDs:<br><img width="584" alt="mapReduceSS" src="https://github.com/user-attachments/assets/af633dfd-a7db-4d66-9a79-92fbcd1309fa">
-</p>
-<p>CustomMapReduceCRUDs:<br><img width="584" alt="customMapReduceSS" src="https://github.com/user-attachments/assets/45eff3c4-cb16-4cab-86df-b057f3a0bf51">
-</p>
+<p>QueryCRUDs:<br><img width="1096" alt="QuerySS" src="https://github.com/user-attachments/assets/5ea8b7d4-d667-494a-8361-c2ead378d52d"></p>
+<p>UpdateCRUDs:<br><img width="1313" alt="UpdateSS" src="https://github.com/user-attachments/assets/efa09781-a4e7-4281-93f6-6201bd3b6eae"></p>
+<p>DeleteCRUDs:<br><img width="1106" alt="DeleteSS" src="https://github.com/user-attachments/assets/8eb2fa62-299d-4f96-b065-0c474e89714e"></p>
+<p>BulkWriteCRUDs:<br><<img width="1106" alt="Bulk-Write-SS" src="https://github.com/user-attachments/assets/d23a29a2-054e-4fdd-a797-9b18725f4720"></p>
+<p>MapReduceCRUDs:<br><img width="584" alt="mapReduceSS" src="https://github.com/user-attachments/assets/af633dfd-a7db-4d66-9a79-92fbcd1309fa"></p>
+<p>CustomMapReduceCRUDs:<br><img width="584" alt="customMapReduceSS" src="https://github.com/user-attachments/assets/45eff3c4-cb16-4cab-86df-b057f3a0bf51"></p>
 
 <p>The custom Map-reduce method I made creates a list of everyone who has made an order on a given day. It could serve useful if you are a store order and need an overview over previous customers, or if someone has placed an order for a specific day. The collection it outputs is a mapping of dates to customers.</p>
