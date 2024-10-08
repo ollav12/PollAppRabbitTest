@@ -1,15 +1,19 @@
 # Rapport: DAT250 Experiment 7
 <h3>Using PostgreSQL image</h3>
+<p>Below is a screenshot from the schema.sql.up which I created from my pollapp tests</p>
 <p>Created SQL.UP<br><img width="807" alt="CreatedSQL UP" src="https://github.com/user-attachments/assets/1ed233d8-b2e4-4495-a2cf-bba7aaa72898">
 </p>
+<p>Using the schema.sql.up I got this database automatically created</p>
 <p>Created DB<br><img width="235" alt="CreatedDB" src="https://github.com/user-attachments/assets/c652b6cb-c7ac-4ff5-a682-03c02255ad1f">
 </p>
+<p>Below is a screenshot of the final command I used to creating the postgres data which i showed above</p>
 <p>Final CMD for creating postgres database<br><img width="1364" alt="FinalCMD" src="https://github.com/user-attachments/assets/b38e3c26-68c0-4d86-a148-70a384c8f6ae">
 </p>
 
 <br>
 
 <h3>Creating own docker image</h3>
+<p>Below is a screenshot of the command I used for running the image</p>
 <p>CMD for Running Image<br><img width="575" alt="RunningImage" src="https://github.com/user-attachments/assets/aecceb7f-c468-479c-9402-a78e1cbaa43c">
 </p>
 <p>CMD for Building Project into Image<br><img width="575" alt="BuildingProjectToImage" src="https://github.com/user-attachments/assets/709c78bf-b01c-4f5d-9219-5dd625f5fbc6">
