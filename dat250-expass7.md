@@ -25,3 +25,6 @@
 <p>From running the image, a container was generated which we can see in this screenshot.</p>
 <p>Corresponding Container Running:<br><img width="1123" alt="RunningContainer" src="https://github.com/user-attachments/assets/9251bc62-be66-4071-8adf-62fcfad9992d">
 </p>
+
+<h3>Techinical difficulty</h3>
+<p>When attempting to run my container (from my own built image) through Docker (and not the terminal window in Intellij), i could not get my application to show on port 8080. This was perhaps due to me not entering paramaters correctly in the pop-up window when running the container in Docker. Nevertheless, using the command shown in the second-to-last screenshot everything works as it should.</p>
